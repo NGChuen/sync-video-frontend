@@ -1,0 +1,15 @@
+body {
+    text-align: center;
+}
+
+#vid-div {
+    margin: auto;
+    width: 60%;
+    height: 85%;
+    background-color: gainsboro;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+}

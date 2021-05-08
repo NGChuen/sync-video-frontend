@@ -3,21 +3,26 @@
 <head>
     <meta charset="utf-8">
     <title>Synchronized Online Video Player - by Zhengchuan Liang</title>
+
+    <!-- css -->
+    <link href="video.css" rel="stylesheet" type="text/css"/>
+
+    <!-- js -->
     <script src="request.js"></script>
 </head>
 
-<body style="text-align:center;">
-    <h1>Naive Synchronized Online Video Player</h1>
-    <h2>Usage: Rename the video that you want to watch to "video.mp4" and place it in the folder containing this "video.html". Then open "video.html" with Chrome.</h1>
+<body>
     <h2>
         Network Delay:
         <span id="delay">{{ delay }}</span>
         ms
     </h3>
 
-    <video id="myVideo" src="video.mp4" controls>
-        Your browser does not support video.
-    </video>
+    <div id="vid-div">
+        <video id="myVideo" src="video.mp4" controls>
+            Your browser does not support video.
+        </video>
+    </div>
     <br>
 
     <script src="video.js"></script>
