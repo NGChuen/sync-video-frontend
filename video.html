@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <h2>
+    <h3>
         Network Delay:
         <span id="delay">{{ delay }}</span>
         ms
@@ -24,6 +24,12 @@
         </video>
     </div>
     <br>
+
+    <h3>
+        Speed:
+        <span id="speed">1</span>
+    </h3>
+    <input id="range" type="range" value="1" min="0.4" max="1.6" step="0.1">
 
     <script src="video.js"></script>
 </body>

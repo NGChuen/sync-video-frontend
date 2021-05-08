@@ -1,19 +1,31 @@
 // 服务器地址
-var server_url = 'http://47.102.210.188:8080'
+var server_url = 'http://47.102.210.188:8080';
 
-var vid_id = "myVideo"
+var vid_id = "myVideo";
 var vid_ele = document.getElementById(vid_id);
+
+var speed_range_id = "range";
+var speed_range_ele = document.getElementById(speed_range_id);
+
+var speed_txt_id = "speed";
+var speed_txt_ele = document.getElementById(speed_txt_id);
+
+// 当前正在播放
+var is_playing = false;
+
+// 当前播放速度
+var speed = 1
 
 // 	事件在视频/音频（audio/video）暂停时触发
 vid_ele.onpause = function () {
     is_playing = false;
-    sync_request()
+    sync_request();
 }
 
 // 事件在视频/音频（audio/video）开始播放时触发
 vid_ele.onplay = function () {
     is_playing = true;
-    sync_request()
+    sync_request();
 }
 
 // // 事件在用户重新定位视频/音频（audio/video）的播放位置后触发
@@ -22,14 +34,20 @@ vid_ele.onplay = function () {
 //     sync()
 // }
 
-// 当前正在播放
-var is_playing = false;
+// 速度条滑动
+speed_range_ele.onchange = function() {
+    speed = speed_range_ele.value;
+    vid_ele.playbackRate = speed; // 改变视频播放速度
+    speed_txt_ele.innerHTML = speed
+    sync_request();
+}
 
 // 同步请求
 function sync_request() {
     let state = {
         current_time: vid_ele.currentTime,
         is_playing: is_playing,
+        speed: speed,
         client_timestamp: new Date().getTime()
     }
     post(
@@ -40,9 +58,9 @@ function sync_request() {
                 return;
             }
 
-            expectation = JSON.parse(responseText)
-            console.log(expectation)
-            sync(expectation)
+            expectation = JSON.parse(responseText);
+            console.log(expectation);
+            sync(expectation);
         }
     )
 }
@@ -51,13 +69,19 @@ function sync_request() {
 function sync(expectation) {
     switch (expectation.is_playing) {
         case true:
-            vid_ele.play()
+            vid_ele.play();
             break;
         case false:
-            vid_ele.pause()
+            vid_ele.pause();
     }
 
-    vid_ele.currentTime = expectation.current_time
+    vid_ele.currentTime = expectation.current_time;
+
+    let expected_speed = expectation.speed;
+    vid_ele.playbackRate = expected_speed;
+    speed = expected_speed;
+    speed_range_ele.value = speed;
+    speed_txt_ele.innerHTML = speed;
 }
 
 // 计算网络延迟
@@ -77,5 +101,5 @@ sync_request();
 calcDelay();
 
 // 定时同步
-setInterval(sync_request, 400)
-setInterval(calcDelay, 5000)
+setInterval(sync_request, 400);
+setInterval(calcDelay, 5000);
