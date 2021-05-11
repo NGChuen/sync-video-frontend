@@ -10,6 +10,12 @@ var speed_range_ele = document.getElementById(speed_range_id);
 var speed_txt_id = "speed";
 var speed_txt_ele = document.getElementById(speed_txt_id);
 
+var upload_id = "upload";
+var upload_ele = document.getElementById(upload_id);
+
+var playing_txt_id = "playing";
+var playing_txt_ele = document.getElementById(playing_txt_id);
+
 // 当前正在播放
 var is_playing = false;
 
@@ -28,18 +34,19 @@ vid_ele.onplay = function () {
     sync_request();
 }
 
-// // 事件在用户重新定位视频/音频（audio/video）的播放位置后触发
-// vid_ele.onseeked = function () {
-//     console.log('onseeked')
-//     sync()
-// }
-
 // 速度条滑动
 speed_range_ele.onchange = function() {
     speed = speed_range_ele.value;
     vid_ele.playbackRate = speed; // 改变视频播放速度
     speed_txt_ele.innerHTML = speed
     sync_request();
+}
+
+// 选择播放的视频文件
+upload_ele.onchange = function() {
+    new_path = upload_ele.files[0].name;
+    vid_ele.src = new_path;
+    playing_txt_ele.innerHTML = new_path;
 }
 
 // 同步请求
